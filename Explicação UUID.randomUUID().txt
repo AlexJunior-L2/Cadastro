@@ -1,0 +1,9 @@
+ Usar UUID.randomUUID() diretamente em grupos pode parecer melhor, mas esse método cria problemas importantes de integração com sistemas de persistência como JPA (Java Persistence API) e Hibernate, que são responsáveis ​​pela criação e gerenciamento de IDs. Porque este framework gerencia o ciclo de vida da organização, que inclui o momento de criação e registro do ID no banco de dados.
+
+ Ao usar UUID.randomUUID() em uma instância autônoma, o ID da entidade é gerado de forma antecipada, o que quebra esse ciclo de vida e causa problemas de comunicação entre o banco de dados e a aplicação. Esse conflito ocorre porque se a estrutura espera que o banco de dados ou sistema gerencie os próprios IDs, ele pode ser confundido com os IDs existentes, afetando a forma como os dados são armazenados e alterados.
+
+ Outro problema é que isso dificulta a flexibilidade do sistema para alterar o tipo de ID no futuro. Se a geração de UUID estivesse na organização sempre que o sistema precisasse de uma nova política de ID como solicitar ou configurar um banco de dados, o código da organização teria que ser atualizado diretamente, tornando essas alterações arriscadas e difíceis.
+
+ Além disso, usar UUID.randomUUID() dificulta o teste. Durante testes como testes unitários e testes de integração, é importante controlar os IDs para criar testes confiáveis ​​e previsíveis. Isso não é possível se os IDs forem gerados automaticamente, o que dificulta a autenticação de determinados produtos.
+
+ Para evitar esses problemas, a prática recomendada é deixar a geração de ID para um sistema persistente (por exemplo, JPA ou Hibernate) e usar anotações apropriadas (por exemplo, @GenerateValue). Isto pode centralizar e gerenciar o gerenciamento de IDs, suportar mudanças futuras e garantir que o sistema seja estável, flexível e fácil de testar.
